@@ -1,9 +1,10 @@
 import React, { useState ,useEffect } from 'react'
-import { useVotes, useUser } from '../../hooks';
+import { useVotes, useUser, useAuth } from '../../hooks';
 import { HeaderRankin } from '../../components/Admin/HeaderRankin/HeaderRankin';
 import { TableVotes, AddEditUserForm, AddStageForm } from '../../components/Admin';
 import { ModalBasic } from '../../components/common';
 import { Loader } from 'semantic-ui-react';
+import {Error404} from '../Error404';
 
 import {Form, Button, Icon, Checkbox} from 'semantic-ui-react';
 
@@ -17,6 +18,9 @@ export const RankingVotes = () => {
     const [contentModal, setContentModal] = useState(null);
     //estado para refrescar la tabla por cada cambio
     const [refresh, setRefresh] = useState(false);
+    
+    const { auth } = useAuth();
+
 
     useEffect( () => {
          getVotesManual();
@@ -48,6 +52,10 @@ export const RankingVotes = () => {
       updateUser(response);
     }
     
+    //PARA SOLO PERMITIR EL ACCESO A ESTA PAGE A LOS ADMINISTRADORES
+    if (!auth.me.admin) {
+      return <Error404 />;
+    }
 
   return (
     <>

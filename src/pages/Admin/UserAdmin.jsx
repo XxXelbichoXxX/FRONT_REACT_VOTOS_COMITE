@@ -1,8 +1,9 @@
 import React, { useState ,useEffect } from 'react'
-import { useUser } from '../../hooks';
+import { useUser, useAuth } from '../../hooks';
 import { Header, TableUsers, AddEditUserForm } from '../../components/Admin';
 import { ModalBasic } from '../../components/common';
 import { Loader } from 'semantic-ui-react';
+import {Error404} from '../Error404';
 
 export const UserAdmin = () => {
   const { users, loading, getUsers } = useUser();
@@ -13,6 +14,7 @@ export const UserAdmin = () => {
   //estado para refrescar la tabla por cada cambio
   const [refresh, setRefresh] = useState(false);
 
+  const { auth } = useAuth();
 
   /*console.log('loading -->', loading);
   console.log('users -->', users);*/
@@ -42,6 +44,11 @@ export const UserAdmin = () => {
     setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={false}/>);
     openCloseModal();
  }
+ 
+  //PARA SOLO PERMITIR EL ACCESO A ESTA PAGE A LOS ADMINISTRADORES
+  if (!auth.me.admin) {
+    return <Error404 />;
+  }
 
   return (
     <>

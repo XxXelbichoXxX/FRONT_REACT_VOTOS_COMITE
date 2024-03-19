@@ -81,6 +81,14 @@ export const AddEditUserForm = ({onCloseModal, onRefresh, user, isBlock}) => {
     { key: '3', value: '3', text: 'Operativo' },
   ];
 
+
+  //Converitir el password siempre a mayusculas
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value.toUpperCase(); // Convertir a mayúsculas
+    formik.setFieldValue('password', newPassword);
+ };
+
+
   return (
     <Form className='add-edit-user-form' onSubmit={formik.handleSubmit}>
         <Form.Group widths='equal'>
@@ -116,7 +124,7 @@ export const AddEditUserForm = ({onCloseModal, onRefresh, user, isBlock}) => {
         </Form.Group>
 
         <Form.Group widths='equal'>
-          <Form.Input name='password' type='password' placeholder='Password' onChange={formik.handleChange} value={formik.values.password} error={formik.errors.password} readOnly={isBlock ? true : false}/>
+          <Form.Input name='password' type='password' placeholder='Password' onChange={handlePasswordChange} value={formik.values.password} error={formik.errors.password} readOnly={isBlock ? true : false}/>
         </Form.Group>
         
         {/* BOTON PARA SUBIR IMAGEN */}

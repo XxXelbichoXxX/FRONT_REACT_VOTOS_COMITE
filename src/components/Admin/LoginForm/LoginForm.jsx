@@ -62,6 +62,12 @@ export const LoginForm = () => {
      },100 );
    };
 
+   const handlePasswordChange = (e) => {
+      const newPassword = e.target.value.toUpperCase(); // Convertir a mayúsculas
+      formik.setFieldValue('password', newPassword);
+   };
+
+
   return (
       <form className={`login ${working ? 'loading' : ''}`} onSubmit={handleSubmit}>
          <p className="title">Iniciar sesión</p>
@@ -85,7 +91,7 @@ export const LoginForm = () => {
             name="password"
             placeholder="Contraseña"
             value={formik.values.password}
-            onChange={formik.handleChange}
+            onChange={handlePasswordChange}
          />
          <i className="fa lock">
             <Icon name='lock' />

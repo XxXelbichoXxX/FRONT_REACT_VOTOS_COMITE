@@ -12,9 +12,9 @@ export function useVotes() {
     try {
       setLoading(true);
       const response = await getCountVotes(
-        data.id_etapa_fk,
-        data.id_rango_fk,
-        data.fecha_voto,
+        data.stageIdFK,
+        data.rangeIdFK,
+        data.voteDate,
         auth.token
       );
       setLoading(false);
@@ -28,13 +28,13 @@ export function useVotes() {
     }
   };
 
-  const getVotesUser = async (id_etapa) => {
+  const getVotesUser = async (stageID, voteYear) => {
     try {
       setLoading(true);
       const response = await getCountVotes(
-        id_etapa,
-        auth.me.id_rank_fk,
-        anio_voto, // Aquí necesitas definir 'anio_voto'
+        stageID,
+        auth.me.rangeIdfk,
+        voteYear, // Aquí necesitas definir 'voteYear'
         auth.token
       );
       setLoading(false);
@@ -47,14 +47,14 @@ export function useVotes() {
     }
   };
 
-  const getVotesManualTop = async (id_etapa, fecha_voto, tope) => {
+  const getVotesManualTop = async (stageId, voteYear, top) => {
     try {
       setLoading(true);
       const response = await getCountVotesTop(
-        id_etapa,
-        auth.me.id_rank_fk,
-        fecha_voto,
-        tope,
+        stageId,
+        auth.me.rangeIdFK,
+        voteYear,
+        top,
         auth.token
       );
       setLoading(false);
@@ -67,13 +67,13 @@ export function useVotes() {
     }
   };
 
-  const userVoted = async (id_etapa, anio_voto) => {
+  const userVoted = async (stageId, voteYear) => {
     try {
       setLoading(true);
       const response = await getCheckVotes(
-        auth.me.id,
-        id_etapa,
-        anio_voto,
+        auth.me.username,
+        stageId,
+        voteYear,
         auth.token
       );
       setLoading(false);

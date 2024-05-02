@@ -33,10 +33,10 @@ export function useUser() {
     }
     
     //para obtener un usuario
-    const getUser = async (userId) => {
+    const getUser = async (username) => {
         try {
             setLoading(true);
-            const response = await getUserApi(userId, auth.token);            
+            const response = await getUserApi(username, auth.token);            
             setLoading(false);
             setUsers(response);
             return response;
@@ -61,15 +61,15 @@ export function useUser() {
     }
 
     //para actualizar un usuario
-    const updateUser = async (userId, data) => {
+    const updateUser = async (username, data) => {
         try {
             setLoading(true);
             //consultas si existe imagen en el formulario para ejecutar una peticion especifica para imagenes o no
             if(data.image) {
-                await updateUserApiImage(userId, data, auth.token);
+                await updateUserApiImage(username, data, auth.token);
                 console.log('Update con imagen');
             }else{
-                await updateUserApi(userId, data, auth.token);
+                await updateUserApi(username, data, auth.token);
                 console.log('Update sin imagen');
             }
             setLoading(false);

@@ -32,7 +32,7 @@ export async function getMeApi(token) {
 //para obtener todos los usuarios
 export async function getUsersApi(token) {
     try {
-        const url = `${BASE_API}/api/users/`;
+        const url = `${BASE_API}/api/user/`;
         const params = {
             headers: { Authorization: `Bearer ${token}`, }
         }
@@ -41,9 +41,9 @@ export async function getUsersApi(token) {
     }catch (error) { throw error; }
 }
 //para obtener un usuario
-export async function getUserApi(userId, token) {
+export async function getUserApi(username, token) {
     try {
-        const url = `${BASE_API}/api/users/${userId}/`;
+        const url = `${BASE_API}/api/user/${username}/`;
         const params = {
             headers: { Authorization: `Bearer ${token}`}            
         }
@@ -56,7 +56,7 @@ export async function getUserApi(userId, token) {
 //crear un nuevo usuario cuando no hay imagen
 export async function addUserApi(data, token) {
     try {
-        const url = `${BASE_API}/api/users/`;
+        const url = `${BASE_API}/api/user/`;
         const params = {
             headers: { 
                 Authorization: `Bearer ${token}`, 
@@ -71,7 +71,7 @@ export async function addUserApi(data, token) {
 //Crear un nuevo usuario cuando hay imagen
 export async function addUserApiImage(data, token) {
     try {
-        const url = `${BASE_API}/api/users/`;
+        const url = `${BASE_API}/api/user/`;
         // Crear un objeto FormData
         const formData = new FormData();
         // Agregar campos de texto al FormData
@@ -92,9 +92,9 @@ export async function addUserApiImage(data, token) {
 }
 //----------------------------------------------------------------------------
 //actualizar un usuario con patch cuando no hay imagen
-export async function updateUserApi(userId, data, token) {
+export async function updateUserApi(username, data, token) {
     try {
-        const url = `${BASE_API}/api/users/${userId}/`;
+        const url = `${BASE_API}/api/user/${username}/`;
         const params = {
             headers: { 
                 Authorization: `Bearer ${token}`, 
@@ -108,9 +108,9 @@ export async function updateUserApi(userId, data, token) {
 }
 
 //actualizar un usuario con patch cuando hay imagen
-export async function updateUserApiImage(userId, data, token) {
+export async function updateUserApiImage(username, data, token) {
     try {
-        const url = `${BASE_API}/api/users/${userId}/`;
+        const url = `${BASE_API}/api/user/${username}/`;
         // Crear un objeto FormData
         const formData = new FormData();
         // Agregar campos de texto al FormData
@@ -129,31 +129,7 @@ export async function updateUserApiImage(userId, data, token) {
         return response.data;
     } catch (error) { throw error; }
 } 
-//----------------------------------------------------------------------------
 
-
-
-/* export async function addUserApi(data, token) {
-    try {
-        const url = `${BASE_API}/api/users/`;
-        // Crear un objeto FormData
-        const formData = new FormData();
-        // Agregar campos de texto al FormData
-        Object.keys(data).forEach(key => {
-            formData.append(key, data[key]);
-        });
-        // Agregar la imagen al FormData
-        formData.append('image', data.image);
-        const params = {
-            headers: { 
-                Authorization: `Bearer ${token}`, 
-                'Content-Type': 'multipart/form-data', // Cambiar el tipo de contenido a 'multipart/form-data'
-            },
-        };
-        const response = await axios.post(url, formData, params);
-        return response.data;
-    } catch (error) {   throw error;   }
-} */
 
 
 

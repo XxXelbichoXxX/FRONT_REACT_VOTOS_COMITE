@@ -32,11 +32,11 @@ export function useStage() {
         }
     }
 
-    const updateStage = async (idStage, data) => {
+    const updateStage = async (stageId, data) => {
         try {
           setLoading(true);
           // Aquí estamos asumiendo que `datosActualizar` contiene los datos que deseas enviar para la actualización
-          const response = await updateStageApi(auth.token, idStage, data);
+          const response = await updateStageApi(auth.token, stageId, data);
           // Después de actualizar, puedes llamar a `getStage` para obtener los datos actualizados
           setLoading(false);
 

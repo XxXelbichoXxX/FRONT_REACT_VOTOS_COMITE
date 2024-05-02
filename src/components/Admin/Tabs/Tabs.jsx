@@ -33,9 +33,9 @@ export const Tabs = () => {
       renderCandidates();
       if (activeTab === "2") {
         const year = new Date().getFullYear().toString();
-        if (auth.me.id_rank_fk === 3) {
+        if (auth.me.rangeIdFK === 3) {
           getVotesManualTop(1, year, 6);
-        } else if (auth.me.id_rank_fk === 2 || auth.me.id_rank_fk === 1) {
+        } else if (auth.me.rangeIdFK === 2 || auth.me.rangeIdFK === 1) {
           getVotesManualTop(1, year, 4);
         }
       }
@@ -59,8 +59,8 @@ export const Tabs = () => {
       if (stage === 1) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const startDate = parseDateString(stages[0].fecha_inicio);
-        const endDate = parseDateString(stages[0].fecha_fin);
+        const startDate = parseDateString(stages[0].startDate);
+        const endDate = parseDateString(stages[0].endDate);
 
         const validate = today >= startDate && today <= endDate;
 
@@ -68,8 +68,8 @@ export const Tabs = () => {
       } else if (stage === 2) {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const startDate = parseDateString(stages[1].fecha_inicio);
-        const endDate = parseDateString(stages[1].fecha_fin);
+        const startDate = parseDateString(stages[1].startDate);
+        const endDate = parseDateString(stages[1].endDate);
 
         const validate = today >= startDate && today <= endDate;
 
@@ -92,36 +92,36 @@ export const Tabs = () => {
   };
 
   const electionCards = (selectedUser) => {
-    if (auth.me.id_rank_fk === 3 && selectedCards.length >= 3) {
+    if (auth.me.rangeIdFK === 3 && selectedCards.length >= 3) {
       setShowModal(true);
-    } else if (auth.me.id_rank_fk !== 3 && selectedCards.length >= 2) {
+    } else if (auth.me.rangeIdFK !== 3 && selectedCards.length >= 2) {
       setShowModal(true);
     } else {
       setSelectedCards([...selectedCards, selectedUser]);
     }
   };
 
-  const removeCard = (userId) => {
+  const removeCard = (username) => {
     if (activeTab === "1") {
-      const updatedCards = selectedCards.filter((card) => card.id !== userId);
+      const updatedCards = selectedCards.filter((card) => card.username !== username);
       setSelectedCards(updatedCards);
       setShowModal(false);
     } else {
-      const updatedCards = selectedCards.filter((card) => card.id_emp_candidato_fk !== userId);
+      const updatedCards = selectedCards.filter((card) => card.empCandidateIdFK !== username);
       setSelectedCards(updatedCards);
       setShowModal(false);
     }
   };
 
   const filteredUsersWithoutSelectedCards = filteredUsers.filter((user) => {
-    return !selectedCards.some((card) => card.id === user.id);
+    return !selectedCards.some((card) => card.username === user.username);
   });
 
   const filteredUsersWithoutSelectedCards2 =
     votes &&
     votes.filter((vote) => {
       return !selectedCards.some(
-        (card) => card.id_emp_candidato_fk === vote.id_emp_candidato_fk
+        (card) => card.empCandidateIdFK === vote.empCandidateIdFK
       );
     });
 
@@ -153,9 +153,9 @@ export const Tabs = () => {
             ) : dateValidator(parseInt(activeTab)) ? (
               <div className="tabContentContainer">
                 {filteredUsersWithoutSelectedCards
-                  .filter((user) => user.id_rank_fk === auth.me.id_rank_fk)
+                  .filter((user) => user.rangeIdFK === auth.me.rangeIdFK)
                   .map((user) => (
-                    <div className="custom-card-wrapper" key={user.id}>
+                    <div className="custom-card-wrapper" key={user.username}>
                       <div className="custom-card-inner">
                         <CustomCardComponent
                           user={user}
@@ -179,11 +179,11 @@ export const Tabs = () => {
               <div className="tabContentContainer">
                 {votes &&
                   filteredUsersWithoutSelectedCards2
-                    .filter((vote) => vote.id_rango_fk === auth.me.id_rank_fk)
+                    .filter((vote) => vote.rangeIdFK === auth.me.rangeIdFK)
                     .map((vote) => (
                       <div
                         className="custom-card-wrapper"
-                        key={vote.id_emp_candidato_fk}
+                        key={vote.empCandidateIdFK}
                       >
                         <div className="custom-card-inner">
                           <CustomCardComponent

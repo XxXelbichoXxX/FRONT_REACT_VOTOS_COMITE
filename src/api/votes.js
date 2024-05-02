@@ -2,14 +2,14 @@ import axios from 'axios';
 import { BASE_API } from '../utils/constants';
 
 
-export async function getCountVotes(id_etapa, id_rango, anio_voto, token) {
+export async function getCountVotes(stageId, rangeId, voteYear, token) {
     try {
-        const url = `${BASE_API}/api/voto/count_votes/`;
+        const url = `${BASE_API}/api/vote/countVotes/`;
         const params = {
             params: {
-                id_etapa_fk: id_etapa,
-                id_rango_fk: id_rango,
-                anio_voto: anio_voto,
+                stageIdFK: stageId,
+                rangeIdFK: rangeId,
+                voteYear: voteYear,
             },
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -24,7 +24,7 @@ export async function getCountVotes(id_etapa, id_rango, anio_voto, token) {
 
 export async function addVotesApi(data, token) {
     try {
-        const url = `${BASE_API}/api/voto/create_votosM/`;
+        const url = `${BASE_API}/api/vote/createMassiveVotes/`;
 
         const params = {
             headers: { 
@@ -43,14 +43,14 @@ export async function addVotesApi(data, token) {
 }
 
 //para obtener los votos con el tope
-export async function getCountVotesTop(id_etapa, id_rango, anio_voto, tope, token) {
+export async function getCountVotesTop(stageId, rangeId, voteYear, tope, token) {
     try {
-        const url = `${BASE_API}/api/voto/count_votesTop/`;
+        const url = `${BASE_API}/api/vote/countTopVotes/`;
         const params = {
             params: {
-                id_etapa_fk: id_etapa,
-                id_rango_fk: id_rango,
-                fecha_voto: anio_voto,
+                stageIdFK: stageId,
+                rangeIdFK: rangeId,
+                voteDate: voteYear,
                 top: tope,
             },
             headers: {
@@ -65,14 +65,14 @@ export async function getCountVotesTop(id_etapa, id_rango, anio_voto, tope, toke
 }
 
 //para verificar si hay votos de un votante
-export async function getCheckVotes(id_emp_votante, id_etapa, anio_voto, token) {
+export async function getCheckVotes(empVoterId, stageId, voteYear, token) {
     try {
-        const url = `${BASE_API}/api/voto/check_vote_exists/`;
+        const url = `${BASE_API}/api/vote/checkExistingVote/`;
         const params = {
             params: {
-                id_emp_votante_fk: id_emp_votante,
-                id_etapa_fk: id_etapa,
-                fecha_voto: anio_voto,
+                empVoterIdFK: empVoterId,
+                stageIdFK: stageId,
+                voteDate: voteYear,
             },
             headers: {
                 Authorization: `Bearer ${token}`,

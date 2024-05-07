@@ -11,15 +11,13 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
 
   const handleVote = () => {
     const votes = users.map((user) => ({
-      id_emp_votante_fk: auth.me.id,
-      id_emp_candidato_fk: stage === 1 ? user.id : user.id_emp_candidato_fk,
-      id_rango_fk: auth.me.id_rank_fk,
-      id_etapa_fk: stage,
-      fecha_voto: new Date(),
-      estatus_revocacion: false,
+      empVoterIdFK: auth.me.username,
+      empCandidateIdFK: stage === 1 ? user.username : user.empCandidateIdFK,
+      rangeIdFK: auth.me.rangeIdFK,
+      stageIdFK: stage,
+      voteDate: new Date(),
+      revocationStatus: false,
     }));
-
-    console.log(votes);
 
     addVote(votes)
       .then(() => {

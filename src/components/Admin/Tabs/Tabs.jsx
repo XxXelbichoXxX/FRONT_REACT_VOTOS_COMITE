@@ -37,7 +37,9 @@ export const Tabs = () => {
           getVotesManualTop(1, year, 6);
         } else if (auth.me.rangeIdFK === 2 || auth.me.rangeIdFK === 1) {
           getVotesManualTop(1, year, 4);
-        }
+        } else {
+          getVotesManualTop(1, year, 4);
+        } 
       }
     }
   }, [activeTab]);
@@ -97,17 +99,18 @@ export const Tabs = () => {
     } else if (auth.me.rangeIdFK !== 3 && selectedCards.length >= 2) {
       setShowModal(true);
     } else {
+      console.log(selectedUser);
       setSelectedCards([...selectedCards, selectedUser]);
     }
   };
 
   const removeCard = (username) => {
     if (activeTab === "1") {
-      const updatedCards = selectedCards.filter((card) => card.username !== username);
+      const updatedCards = selectedCards.filter((card) => card.id !== username);
       setSelectedCards(updatedCards);
       setShowModal(false);
     } else {
-      const updatedCards = selectedCards.filter((card) => card.empCandidateIdFK !== username);
+      const updatedCards = selectedCards.filter((card) => card.id !== username);
       setSelectedCards(updatedCards);
       setShowModal(false);
     }
@@ -136,7 +139,8 @@ export const Tabs = () => {
         </NavItem>
         <NavItem
           className={activeTab === "2" ? "activeTab tabBase" : "tabBase"}
-          onClick={() => toggle("2")}
+          onClick={() => toggle("2")
+          }
         >
           Etapa 2
         </NavItem>
@@ -148,7 +152,7 @@ export const Tabs = () => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <SearchBar setSearch={setSearch} />
-            {hasVoted ? (
+            {!hasVoted ? (
               <p>Ya has votado en esta etapa.</p>
             ) : dateValidator(parseInt(activeTab)) ? (
               <div className="tabContentContainer">
@@ -167,7 +171,7 @@ export const Tabs = () => {
                     </div>
                   ))}
               </div>
-            ) : (
+            ) : ( 
               <p>Estás fuera de la fecha de votaciones.</p>
             )}
           </TabPane>
@@ -179,7 +183,7 @@ export const Tabs = () => {
               <div className="tabContentContainer">
                 {votes &&
                   filteredUsersWithoutSelectedCards2
-                    .filter((vote) => vote.rangeIdFK === auth.me.rangeIdFK)
+                    /* .filter((vote) => vote.rangeIdFK === auth.me.rangeIdFK) quitar ya que tenga rangos*/
                     .map((vote) => (
                       <div
                         className="custom-card-wrapper"

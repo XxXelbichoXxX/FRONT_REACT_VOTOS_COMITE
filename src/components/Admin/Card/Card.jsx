@@ -11,7 +11,7 @@ export const CustomCardComponent = ({ user, action, electionCards, etapa }) => {
     <>
       <CustomCard
         title={
-          etapa === 1 ? user.first_name + " " + user.last_name : user.full_name
+          etapa === 1 ? user.first_name + " " + user.last_name + " " + user.username : user.full_name
         }
         className="card-default"
       >

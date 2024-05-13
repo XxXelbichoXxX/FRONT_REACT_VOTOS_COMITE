@@ -4,52 +4,52 @@ import { useAuth } from "./useAuth";
 
 export function useVotes() {
   const { auth } = useAuth();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadingVote, setLoadingVote] = useState(true);
+  const [errorVote, setErrorVote] = useState(null);
   const [votes, setVotes] = useState(null);
 
   const getVotesManual = async (data) => {
     try {
-      setLoading(true);
+      setLoadingVote(true);
       const response = await getCountVotes(
         data.stageIdFK,
         data.rangeIdFK,
         data.voteDate,
         auth.token
       );
-      setLoading(false);
+      setLoadingVote(false);
 
       console.log(response);
       setVotes(response);
       return response;
-    } catch (error) {
-      setLoading(false);
-      setError(error);
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
     }
   };
 
   const getVotesUser = async (stageID, voteYear) => {
     try {
-      setLoading(true);
+      setLoadingVote(true);
       const response = await getCountVotes(
         stageID,
         auth.me.rangeIdfk,
         voteYear, // Aquí necesitas definir 'voteYear'
         auth.token
       );
-      setLoading(false);
+      setLoadingVote(false);
 
       setVotes(response);
       console.log(votes);
-    } catch (error) {
-      setLoading(false);
-      setError(error);
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
     }
   };
 
   const getVotesManualTop = async (stageId, voteYear, top) => {
     try {
-      setLoading(true);
+      setLoadingVote(true);
       const response = await getCountVotesTop(
         stageId,
         auth.me.rangeIdFK,
@@ -57,47 +57,47 @@ export function useVotes() {
         top,
         auth.token
       );
-      setLoading(false);
+      setLoadingVote(false);
 
       setVotes(response);
       //console.log(response);
-    } catch (error) {
-      setLoading(false);
-      setError(error);
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
     }
   };
 
   const userVoted = async (stageId, voteYear) => {
     try {
-      setLoading(true);
+      setLoadingVote(true);
       const response = await getCheckVotes(
         auth.me.username,
         stageId,
         voteYear,
         auth.token
       );
-      setLoading(false);
+      setLoadingVote(false);
       return response; // Devuelve directamente la respuesta
-    } catch (error) {
-      setLoading(false);
-      setError(error);
-      return false; // En caso de error, devuelve false
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
+      return false; // En caso de errorVote, devuelve false
     }
   };
   const addVote = async (data) => {
     try {
-      setLoading(true);
+      setLoadingVote(true);
       await addVotesApi(data, auth.token);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      setError(error);
+      setLoadingVote(false);
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
     }
   };
 
   return {
-    loading,
-    error,
+    loadingVote,
+    errorVote,
     votes,
     getVotesUser,
     getVotesManual,

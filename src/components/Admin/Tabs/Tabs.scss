@@ -32,3 +32,15 @@
   padding: 8px;
   max-width: 300px; 
 }
+
+.loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.spinner-custom-color {
+  color: #c4b19a !important;
+}

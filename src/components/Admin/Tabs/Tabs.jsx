@@ -14,7 +14,7 @@ import { Result } from "antd";
 export const Tabs = () => {
   const [activeTab, setActiveTab] = useState("1");
   const [search, setSearch] = useState("");
-  const { users, loading, getUsers, auth } = useUser();
+  const { users, loadingUser, getUsers, auth } = useUser();
   const { votes, loadingVotes, userVoted, getVotesManualTop } = useVotes();
   const { stages, loadingStage, getStage } = useStage();
   const [selectedCards, setSelectedCards] = useState([]);
@@ -33,13 +33,9 @@ export const Tabs = () => {
       renderCandidates();
       if (activeTab === "2") {
         const year = new Date().getFullYear().toString();
-        if (auth.me.rangeIdFK === 3) {
-          getVotesManualTop(1, year, 6);
-        } else if (auth.me.rangeIdFK === 2 || auth.me.rangeIdFK === 1) {
-          getVotesManualTop(1, year, 4);
-        } else {
-          getVotesManualTop(1, year, 4);
-        } 
+        const rangeId = auth.me.rangeIdFK;
+        const voteCount = rangeId === 3 ? 6 : 4;
+        getVotesManualTop(1, year, voteCount);
       }
     }
   }, [activeTab]);
@@ -52,32 +48,24 @@ export const Tabs = () => {
       )
     : [];
 
-  const toggle = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
+  const toggle = (tab) => setActiveTab(tab);
 
   const dateValidator = (stage) => {
-    if (stages) {
-      if (stage === 1) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const startDate = parseDateString(stages[0].startDate);
-        const endDate = parseDateString(stages[0].endDate);
-
-        const validate = today >= startDate && today <= endDate;
-
-        return validate;
-      } else if (stage === 2) {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const startDate = parseDateString(stages[1].startDate);
-        const endDate = parseDateString(stages[1].endDate);
-
-        const validate = today >= startDate && today <= endDate;
-
-        return validate;
-      }
-    }
+    if (!stages) return false;
+    const [startDate, endDate] =
+      stage === 1
+        ? [
+            parseDateString(stages[0].startDate),
+            parseDateString(stages[0].endDate),
+          ]
+        : [
+            parseDateString(stages[1].startDate),
+            parseDateString(stages[1].endDate),
+          ];
+    const today = new Date().setHours(0, 0, 0, 0);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    return today >= start && today <= end;
   };
 
   const parseDateString = (dateString) => {
@@ -87,10 +75,10 @@ export const Tabs = () => {
 
   const renderCandidates = async () => {
     const year = new Date().getFullYear().toString();
-    const etapa = activeTab === "1" ? 1 : 2;
-    const result = await userVoted(etapa, year);
+    const stage = activeTab === "1" ? 1 : 2;
+    const result = await userVoted(stage, year);
     setHasVoted(result);
-    dateValidator(etapa);
+    dateValidator(stage);
   };
 
   const electionCards = (selectedUser) => {
@@ -139,21 +127,44 @@ export const Tabs = () => {
         </NavItem>
         <NavItem
           className={activeTab === "2" ? "activeTab tabBase" : "tabBase"}
-          onClick={() => toggle("2")
-          }
+          onClick={() => toggle("2")}
         >
           Etapa 2
         </NavItem>
       </Nav>
 
-      {loading ? (
-        <p>Cargando a los candidatos...</p>
+      {loadingStage ? (
+        <div className="loader">
+          {/* aqui recuerda cargar las imagenes de las dependencias */}
+          <h1>Cargando datos de las etapas, por favor, espere.</h1>
+          <div
+            className="spinner-border spinner-custom-color"
+            role="status"
+          ></div>
+        </div>
+      ) : loadingUser ? (
+        <div className="loader">
+          {/* aqui recuerda cargar las imagenes de las dependencias */}
+          <h1>Cargando datos de los empleados, por favor, espere.</h1>
+          <div
+            className="spinner-border spinner-custom-color"
+            role="status"
+          ></div>
+        </div>
       ) : (
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <SearchBar setSearch={setSearch} />
-            {!hasVoted ? (
-              <p>Ya has votado en esta etapa.</p>
+            {hasVoted ? (
+              <div className="loader">
+                {/* aqui recuerda cargar las imagenes de las dependencias */}
+                <div>
+                  <h1>
+                    Muchas gracias por tu participación, es muy importante para
+                    nosotros.
+                  </h1>
+                </div>
+              </div>
             ) : dateValidator(parseInt(activeTab)) ? (
               <div className="tabContentContainer">
                 {filteredUsersWithoutSelectedCards
@@ -171,34 +182,61 @@ export const Tabs = () => {
                     </div>
                   ))}
               </div>
-            ) : ( 
+            ) : (
               <p>Estás fuera de la fecha de votaciones.</p>
             )}
           </TabPane>
 
           <TabPane tabId="2">
-            {hasVoted ? (
-              <p>Ya has votado en esta etapa.</p>
+            {loadingStage ? (
+              <div className="loader">
+                {/* aqui recuerda cargar las imagenes de las dependencias */}
+                <h1>Cargando datos de las etapas, por favor, espere.</h1>
+                <div
+                  className="spinner-border spinner-custom-color"
+                  role="status"
+                ></div>
+              </div>
+            ) : loadingVotes ? (
+              <div className="loader">
+                {/* aqui recuerda cargar las imagenes de las dependencias */}
+                <h1>
+                  Cargando los votos de la etapa de nominaciones, por favor,
+                  espere.
+                </h1>
+                <div
+                  className="spinner-border spinner-custom-color"
+                  role="status"
+                ></div>
+              </div>
+            ) : hasVoted ? (
+              <div className="loader">
+                {/* aqui recuerda cargar las imagenes de las dependencias */}
+                <div>
+                  <h1>
+                    Muchas gracias por tu participación, es muy importante para
+                    nosotros.
+                  </h1>
+                </div>
+              </div>
             ) : dateValidator(parseInt(activeTab)) ? (
               <div className="tabContentContainer">
                 {votes &&
-                  filteredUsersWithoutSelectedCards2
-                    /* .filter((vote) => vote.rangeIdFK === auth.me.rangeIdFK) quitar ya que tenga rangos*/
-                    .map((vote) => (
-                      <div
-                        className="custom-card-wrapper"
-                        key={vote.empCandidateIdFK}
-                      >
-                        <div className="custom-card-inner">
-                          <CustomCardComponent
-                            user={vote}
-                            action={"Votar"}
-                            electionCards={electionCards}
-                            etapa={2}
-                          />
-                        </div>
+                  filteredUsersWithoutSelectedCards2.map((vote) => (
+                    <div
+                      className="custom-card-wrapper"
+                      key={vote.empCandidateIdFK}
+                    >
+                      <div className="custom-card-inner">
+                        <CustomCardComponent
+                          user={vote}
+                          action={"Votar"}
+                          electionCards={electionCards}
+                          etapa={2}
+                        />
                       </div>
-                    ))}
+                    </div>
+                  ))}
               </div>
             ) : (
               <p>Estás fuera de la fecha de votaciones.</p>

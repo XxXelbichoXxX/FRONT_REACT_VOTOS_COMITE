@@ -1,7 +1,14 @@
 import {AdminLayout} from '../layouts';
 import {HomeAdmin, UserAdmin, RankingVotes, VotacionPage } from '../pages/Admin';
+import {Error404} from '../pages/Error404';
 
 const routesAdmin = [
+    {
+        path: "/",
+        layout: AdminLayout,
+        component: HomeAdmin,
+        exact: true,
+    },
     {
         path: "/admin",
         layout: AdminLayout,
@@ -25,7 +32,12 @@ const routesAdmin = [
         layout: AdminLayout,
         component: VotacionPage,
         exact: true,
-    }
+    },
+/*     {
+        path:"/*",
+        layout: AdminLayout,
+        component: Error404,
+    }  */
 ];
 
 export default routesAdmin;

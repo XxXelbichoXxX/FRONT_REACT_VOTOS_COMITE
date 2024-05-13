@@ -4,7 +4,7 @@ import { HeaderRankin } from '../../components/Admin/HeaderRankin/HeaderRankin';
 import { TableVotes, AddEditUserForm, AddStageForm } from '../../components/Admin';
 import { ModalBasic } from '../../components/common';
 import { Loader } from 'semantic-ui-react';
-import {Error404} from '../Error404';
+import {Error404} from '../Error404/Error404';
 
 import {Form, Button, Icon, Checkbox} from 'semantic-ui-react';
 
@@ -53,7 +53,7 @@ export const RankingVotes = () => {
     }
     
     //PARA SOLO PERMITIR EL ACCESO A ESTA PAGE A LOS ADMINISTRADORES
-    if (!auth.me.admin) {
+    if (!auth.me.isAdmin) {
       return <Error404 />;
     }
 

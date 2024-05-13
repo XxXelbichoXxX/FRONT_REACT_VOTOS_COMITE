@@ -20,6 +20,7 @@ function MenuLeft(props) {
     const {pathname} = props;
     //par obtener los datos del usuario que esta logeado actualmente en el sistema y saber a que permitirle dar acceso de nuestro menu
     const {auth} = useAuth();
+    console.log(auth);
     //console.log(auth);
 
     return (
@@ -31,21 +32,15 @@ function MenuLeft(props) {
             <Menu.Item as={Link} to='/admin/vote'  active={pathname === '/admin/vote'} className='side-menu-item'>                    
                     <Icon name='vcard' /><span>Votar</span>
             </Menu.Item>
-
-            {/* {auth.me?.admin && (
-                <Menu.Item as={Link} to='/admin/payments-history'  active={pathname === '/admin/payments-history'} className='side-menu-item'>
-                    <Icon name='history' /><span>Historial de Votos</span>
-                </Menu.Item>  
-            )}  */}
             
             {/*bloqueamos el acceso de los usuarios que no son administradores*/}
-            { auth.me?.admin &&  (
+            { auth.me?.isAdmin &&  (
                  <Menu.Item as={Link} to='/admin/users'  active={pathname === '/admin/users'} className='side-menu-item'>
                     <Icon name='users' /><span>Usuarios</span>
                 </Menu.Item>
             )}     
 
-            {auth.me?.admin && (
+            {auth.me?.isAdmin && (
                  <Menu.Item as={Link} to='/admin/RankingVotes'  active={pathname === '/admin/RankingVotes'} className='side-menu-item'>                    
                     <Icon name='line graph' /><span>Ranking de votos</span>
                 </Menu.Item>

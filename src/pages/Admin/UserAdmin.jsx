@@ -3,8 +3,7 @@ import { useUser, useAuth } from '../../hooks';
 import { Header, TableUsers, AddEditUserForm } from '../../components/Admin';
 import { ModalBasic } from '../../components/common';
 import { Loader } from 'semantic-ui-react';
-import {Error404} from '../Error404';
-
+import {Error404} from '../Error404/Error404';
 export const UserAdmin = () => {
   const { users, loading, getUsers } = useUser();
   /* estados para el funcionamiento de la ventna modal */
@@ -46,7 +45,7 @@ export const UserAdmin = () => {
  }
  
   //PARA SOLO PERMITIR EL ACCESO A ESTA PAGE A LOS ADMINISTRADORES
-  if (!auth.me.admin) {
+  if (!auth.me.isAdmin) {
     return <Error404 />;
   }
 

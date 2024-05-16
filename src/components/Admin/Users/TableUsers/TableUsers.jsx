@@ -66,14 +66,14 @@ export const TableUsers = (props) => {
     {
       title: 'Rango',
       width: 20,
-      dataIndex: 'rankIdFK',
+      dataIndex: 'rangeIdFK',
       align: 'center',
       filters: [
         { text: 'Superior', value: '1' },
         { text: 'Medio', value: '2' },
         { text: 'Operativo', value: '3' },
       ],
-      onFilter: (value, record) => record.rankIdFK.toString() === value,
+      onFilter: (value, record) => record.rangeIdFK.toString() === value,
       render: (idRank) => {
         switch (idRank) {
           case 1:

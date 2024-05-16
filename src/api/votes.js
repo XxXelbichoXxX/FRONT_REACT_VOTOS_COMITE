@@ -2,14 +2,14 @@ import axios from 'axios';
 import { BASE_API } from '../utils/constants';
 
 
-export async function getCountVotes(stageId, rangeId, voteYear, token) {
+export async function getCountVotes(stageId, rangeId, period, token) {
     try {
         const url = `${BASE_API}/api/vote/countVotes/`;
         const params = {
             params: {
                 stageIdFK: stageId,
                 rangeIdFK: rangeId,
-                voteYear: voteYear,
+                period: period,
             },
             headers: {
                 Authorization: `Bearer ${token}`,

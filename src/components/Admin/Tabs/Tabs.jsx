@@ -155,7 +155,7 @@ export const Tabs = () => {
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
             <SearchBar setSearch={setSearch} />
-            {hasVoted ? (
+            {!hasVoted ? (
               <div className="loader">
                 {/* aqui recuerda cargar las imagenes de las dependencias */}
                 <div>

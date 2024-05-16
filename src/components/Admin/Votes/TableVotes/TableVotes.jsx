@@ -10,13 +10,15 @@ export const TableVotes = (props) => {
   const columns = [
     {
       title: 'Etapa',
-      dataIndex: 'id_etapa_fk',
-      render: (idEtapa) => {
-        switch (idEtapa) {
+      align: 'center',
+      width: 100,
+      dataIndex: 'stageIdFK',
+      render: (stageIdFK) => {
+        switch (stageIdFK) {
           case 1:
-            return <Label color='grey'>Nominaciones</Label>;
+            return <Label color='blue'>Nominaciones</Label>;
           case 2:
-            return <Label color='grey'>Elecciones</Label>;
+            return <Label color='green'>Elecciones</Label>;
           default:
             return <Label color='red'>Desconocida</Label>;
         }
@@ -24,56 +26,49 @@ export const TableVotes = (props) => {
     },
     {
       title: 'Rango',
-      dataIndex: 'id_rango_fk',
-      filters: [
-        {
-          text: 'Superior',
-          value: '1',
-        },
-        {
-          text: 'Medio',
-          value: '2',
-        },
-        {
-          text: 'Operativo',
-          value: '3',
-        },
-      ],
-      onFilter: (value, record) => record.id_rango_fk ===  Number(value),
-      render: (idRank) => {
-        switch (idRank) {
+      align: 'center',
+      width: 100,
+      dataIndex: 'rangeIdFK',
+      render: (rangeIdFK) => {
+        switch (rangeIdFK) {
           case 1:
-            return <Label color='purple'>Superior</Label>;
+            return <Label color='red'>Superior</Label>;
           case 2:
-            return <Label color='blue'>Medio</Label>;
+            return <Label color='green'>Medio</Label>;
           case 3:
-            return <Label color='orange'>Operatico</Label>;
+            return <Label color='blue'>Operativo</Label>;
           default:
-            return <Label color='red'>Desconocido</Label>;
+            return <Label color='yellow'>Sin rango</Label>;
         }
       }, 
     },
     {
-      title: 'Nombre',
+      title: 'Nombre del candidato',
       dataIndex: 'full_name',
-      sorter: true,
+      align: 'center',
+      width: 250,
       render: (full_name) => `${full_name}`,
     },
     {
-      title: 'Año',
-      dataIndex: 'year',
-      render: (dateString) => dateString.substring(0, 4),//para que se vea solo el año
+      title: 'Año de la votación',
+      align: 'center',
+      width: 150,
+      dataIndex: 'period',
     },
     {
-      title: 'Total votos',
+      title: 'Total de votos',
+      align: 'center',
+      width: 150,
       dataIndex: 'total',
       render: (total) => <Label color='green'>{total} votos</Label>,
     },
     {
-      title: 'Imagen',
+      title: 'Subir imagen del candidato',
+      align: 'center',
+      width: 150,
       render: (text, record) => (
         <span style={{ textAlign: 'left' }}>
-          <Button icon color="red" onClick={() => findUser(record.id_emp_candidato_fk)}> <Icon name='upload' /></Button>
+          <Button icon color="red" onClick={() => findUser(record.empCandidateIdFK)}> <Icon name='upload' /></Button>
         </span>
       ),
     },
@@ -87,7 +82,7 @@ export const TableVotes = (props) => {
         columns={columns}
         bordered
         pagination={{ pageSize: 7 }} // Optional pagination
-        rowKey="id_emp_candidato_fk"
+        rowKey={(record) => `${record.empCandidateIdFK}_${record.period}`}
       />
     </>    
   );

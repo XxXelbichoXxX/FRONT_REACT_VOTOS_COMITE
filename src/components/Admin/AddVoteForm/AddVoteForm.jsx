@@ -18,6 +18,7 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
       voteDate: new Date(),
       revocationStatus: false,
     }));
+    console.log("rangeIdFK:", auth.me.rangeIdFK); // Aquí agregamos el console.log
 
     addVote(votes)
       .then(() => {
@@ -60,7 +61,7 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
       key: "action",
       render: (text, record) => (
         <Button icon color="red" 
-        onClick={() => stage === 1 ? handleDelete(record.id) : handleDelete(record.id_emp_candidato_fk)}>  <Icon name='trash' />
+        onClick={() => stage === 1 ? handleDelete(record.id) : handleDelete(record.empCandidateIdFK)}>  <Icon name='trash' />
           Eliminar
         </Button>
       ),
@@ -74,7 +75,7 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
           dataSource={users}
           columns={columns}
           pagination={false}
-          rowKey={(record) => stage === 2 ? record.id_emp_candidato_fk : record.id}
+          rowKey={(record) => stage === 2 ? record.empCandidateIdFK : record.id}
         />
       </div>
       <div className="buttonContainer">

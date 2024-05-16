@@ -14,7 +14,7 @@ export function useVotes() {
       const response = await getCountVotes(
         data.stageIdFK,
         data.rangeIdFK,
-        data.voteDate,
+        data.period,
         auth.token
       );
       setLoadingVote(false);

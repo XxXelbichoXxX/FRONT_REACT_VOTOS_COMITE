@@ -13,7 +13,7 @@ export const AddEditUserForm = ({
   onRefresh,
   user,
   isBlock,
-  uImage,
+  fTime,
 }) => {
   const { addUser, updateUser } = useUser();
   const [depOptions, setDepOptions] = useState([]);
@@ -55,7 +55,7 @@ export const AddEditUserForm = ({
       email: user?.email || "",
       workstation: user?.workstation || "",
       dependencyIdFK: user?.dependencyIdFK || "",
-      rankIdFK: user?.rankIdFK || 0,
+      rangeIdFK: user?.rangeIdFK || 0,
       antiquity: user?.antiquity || 0,
       isAdmin: user?.isAdmin ? true : false,
       is_staff: true,
@@ -71,7 +71,7 @@ export const AddEditUserForm = ({
         .required("El email es obligatorio"),
       workstation: Yup.string().required("La workstation es obligatoria"),
       dependencyIdFK: Yup.string().required("La dependency es obligatoria"),
-      rankIdFK: Yup.number().required("El rango es obligatorio"),
+      rangeIdFK: Yup.number().required("El rango es obligatorio"),
       antiquity: Yup.number().required(
         "Los años de antiguedad son obligatorios"
       ),
@@ -127,7 +127,7 @@ export const AddEditUserForm = ({
           onChange={formik.handleChange}
           value={formik.values.username}
           error={formik.errors.username}
-          readOnly={user ? true : false}
+          readOnly={isBlock ? true : false}
         />
         <Form.Input
           label="Ingresa el correo electrónico"
@@ -140,18 +140,21 @@ export const AddEditUserForm = ({
         />
       </Form.Group>
       {/* Información de la cuenta */}
-      <Form.Group widths="equal">
-        <Form.Input
-          label="Escribe la contraseña del empleado"
-          name="password"
-          type="password"
-          placeholder="Contraseña"
-          onChange={handlePasswordChange}
-          value={formik.values.password}
-          error={formik.errors.password}
-          readOnly={isBlock ? true : false}
-        />
-      </Form.Group>
+      {fTime === true && (
+        <>
+          <Form.Group widths="equal">
+            <Form.Input
+              label="Escribe la contraseña del empleado"
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              onChange={handlePasswordChange}
+              value={formik.values.password}
+              error={formik.errors.password}
+            />
+          </Form.Group>
+        </>
+      )}
 
       {/* Información personal */}
       <div className="input-label">
@@ -207,14 +210,14 @@ export const AddEditUserForm = ({
       <Form.Group widths="equal">
         <Form.Dropdown
           label="Rango"
-          name="rankIdFK"
+          name="rangeIdFK"
           placeholder="Rango"
           fluid
           selection
           options={rankOptions}
-          onChange={(e, { value }) => formik.setFieldValue("rankIdFK", value)}
-          value={formik.values.rankIdFK}
-          error={formik.errors.rankIdFK}
+          onChange={(e, { value }) => formik.setFieldValue("rangeIdFK", value)}
+          value={formik.values.rangeIdFK}
+          error={formik.errors.rangeIdFK}
           disabled={isBlock ? true : false}
         />
         <Form.Input
@@ -229,7 +232,7 @@ export const AddEditUserForm = ({
         />
       </Form.Group>
 
-      {uImage === 1 && (
+      {fTime === false || isBlock === true && (
         <>
           {/* Imagen */}
           <Form.Group widths="equal">

@@ -1,2 +1,2 @@
 export * from './Header';
-export * from '../HeaderRankin/HeaderRankin';
+export * from '../FormRanking/FormRanking';

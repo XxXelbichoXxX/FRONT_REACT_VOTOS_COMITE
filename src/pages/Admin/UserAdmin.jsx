@@ -32,14 +32,14 @@ export const UserAdmin = () => {
     /* agregar titulo de la ventana */
     setTitleModal('Registrar a un nuevo empleado');
     //agregamos el componente del formulario que aparecera en la ventana modal
-    setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh}/>);
+    setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} fTime={true}/>);
     /* es solo para abrir la ventana */
     openCloseModal();
  }
 
  const updateUser = (data) => {
     setTitleModal('Editar al empleado ' + data.first_name + ' ' + data.last_name);
-    setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={false}/>);
+    setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={false} fTime={true}/>);
     openCloseModal();
  }
  

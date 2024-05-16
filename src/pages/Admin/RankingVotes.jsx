@@ -39,9 +39,8 @@ export const RankingVotes = () => {
 
 
      const updateUser = (data) => {
-      console.log('ventana modal');
-      setTitleModal('Editar usuario');
-      setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={true}/>);
+      setTitleModal('Editar al empleado ' + data.first_name + ' ' + data.last_name);
+      setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={true} uImage={1}/>);
       openCloseModal();
     }
 

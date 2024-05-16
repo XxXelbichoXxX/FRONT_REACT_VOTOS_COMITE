@@ -17,7 +17,7 @@ export const CustomCardComponent = ({ user, action, electionCards, etapa }) => {
       >
           {etapa === 2 ? <img src={user.image} alt="Imagen" /> : <img src= {logo} alt="Imagen" />}
           <div className="content-card">
-          <h5>{user.dependencyId}</h5>
+          <h5>{user.dependencyIdFK}</h5>
           <p>{user.workstation}</p>
           <Button className="custom-button" type="primary" onClick={handleClick}>
             {action}

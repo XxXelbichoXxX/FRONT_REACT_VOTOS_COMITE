@@ -30,7 +30,7 @@ export const UserAdmin = () => {
   /* basicamente en esta funcion modificas los estados que ser veran reflejados en el componente  ModalBasic*/
   const addUser = () => { 
     /* agregar titulo de la ventana */
-    setTitleModal('Crear un nuevo usuario');
+    setTitleModal('Registrar a un nuevo empleado');
     //agregamos el componente del formulario que aparecera en la ventana modal
     setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh}/>);
     /* es solo para abrir la ventana */
@@ -38,8 +38,7 @@ export const UserAdmin = () => {
  }
 
  const updateUser = (data) => {
-    //console.log(data);
-    setTitleModal('Editar usuario');
+    setTitleModal('Editar al empleado ' + data.first_name + ' ' + data.last_name);
     setContentModal(<AddEditUserForm onCloseModal={openCloseModal} onRefresh={onRefresh} user={data} isBlock={false}/>);
     openCloseModal();
  }

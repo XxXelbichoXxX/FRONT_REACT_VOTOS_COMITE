@@ -46,7 +46,6 @@ export async function updateDependencyApi(dependencyId, data, token) {
       const formData = new FormData();
       // Agregar campos de texto al FormData
       Object.keys(data).forEach(key => {
-          // Verificar si la propiedad es 'image' y si existe un valor
           if (key === 'logo' && !data[key]) { return; }
           formData.append(key, data[key]);
       });

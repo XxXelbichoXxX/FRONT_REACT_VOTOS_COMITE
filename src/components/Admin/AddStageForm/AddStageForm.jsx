@@ -5,10 +5,12 @@ import { useEffect } from "react";
 import * as Yup from "yup";
 import { Form, Button, Icon } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { useStage } from "../../../hooks";
+import { useAuth, useStage } from "../../../hooks";
+
 
 export const AddStageForm = ({ stage, onCloseModal }) => {
   const { updateStage, getStage, stages } = useStage();
+  const { auth } = useAuth();
 
   useEffect(() => {
     getStage();
@@ -16,12 +18,13 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
 
   const formik = useFormik({
     initialValues: {
-      fecha_inicio: "",
-      fecha_fin: "",
+      startDate: "",
+      endDate: "",
+      dependencyIdFK: auth.me.dependencyIdFK,
     },
     validationSchema: Yup.object({
-      fecha_inicio: Yup.date().required("Este campo es obligatorio"),
-      fecha_fin: Yup.date().required("Este campo es obligatorio"),
+      startDate: Yup.date().required("Este campo es obligatorio"),
+      endDate: Yup.date().required("Este campo es obligatorio"),
     }),
     onSubmit: async (formValues) => {
       try {
@@ -44,11 +47,11 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
           <div className="editStage">
             <div className="start">
               <p>Fecha de inicio:</p>
-              <span>{stages[0].fecha_inicio}</span>
+              <span>{stages[0].startDate}</span>
             </div>
             <div className="end">
               <p>Fecha de fin:</p>
-              <span>{stages[0].fecha_fin}</span>
+              <span>{stages[0].endDate}</span>
             </div>
           </div>
           <br />
@@ -60,11 +63,11 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
           <div className="editStage">
             <div className="start">
               <p>Fecha de inicio:</p>
-              <span>{stages[1].fecha_inicio}</span>
+              <span>{stages[1].startDate}</span>
             </div>
             <div className="end">
               <p>Fecha de fin:</p>
-              <span>{stages[1].fecha_fin}</span>
+              <span>{stages[1].endDate}</span>
             </div>
           </div>
           <br />
@@ -77,23 +80,23 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
         <Form.Input
           type="date"
           label="Fecha de Inicio"
-          name="fecha_inicio"
+          name="startDate"
           onChange={formik.handleChange}
-          value={formik.values.fecha_inicio}
+          value={formik.values.startDate}
         />
-        {formik.errors.fecha_inicio && formik.touched.fecha_inicio && (
-          <div className="error">{formik.errors.fecha_inicio}</div>
+        {formik.errors.startDate && formik.touched.startDate && (
+          <div className="error">{formik.errors.startDate}</div>
         )}
 
         <Form.Input
           type="date"
           label="Fecha de Fin"
-          name="fecha_fin"
+          name="endDate"
           onChange={formik.handleChange}
-          value={formik.values.fecha_fin}
+          value={formik.values.endDate}
         />
-        {formik.errors.fecha_fin && formik.touched.fecha_fin && (
-          <div className="error">{formik.errors.fecha_fin}</div>
+        {formik.errors.endDate && formik.touched.endDate && (
+          <div className="error">{formik.errors.endDate}</div>
         )}
 
         <Button type="submit" primary fluid className="custom-button">

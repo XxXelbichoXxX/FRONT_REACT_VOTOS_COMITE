@@ -146,6 +146,7 @@ export const AddEditDependencyForm = ({
         </Button>
         <input {...getInputProps()} />
       </Form.Group>
+      <br />
       <Form.Group widths="equal">
         <Image src={previewImage} fluid />
       </Form.Group>

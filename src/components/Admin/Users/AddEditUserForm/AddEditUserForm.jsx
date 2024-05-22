@@ -13,6 +13,7 @@ export const AddEditUserForm = ({
   onRefresh,
   user,
   isBlock,
+  fTime
 }) => {
   const { addUser, updateUser } = useUser();
   const [depOptions, setDepOptions] = useState([]);

@@ -9,3 +9,6 @@ export * from './AddStageForm';
 
 export * from './Card';
 export * from './SearchBar';
+
+export * from './Dependencies';
+

@@ -1,0 +1,29 @@
+
+.ant-table {
+    border: 1px solid #ddd; // Cambia el color del borde de la tabla
+  }
+  
+  .ant-table-thead > tr > th {
+    border: 1px solid #ddd; // Cambia el color del borde de las celdas del encabezado
+  }
+  
+  .ant-table-tbody > tr > td {
+    border: 1px solid #ddd; // Cambia el color del borde de las celdas del cuerpo de la tabla
+  }
+
+
+
+.table-user-admin {
+    td{
+        &.status{
+            .icon{
+                &.close{
+                    color: #f00;
+                }
+                &.check{
+                    color: #008000;
+                }
+            }
+        }
+    };
+}

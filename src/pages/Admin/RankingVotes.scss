@@ -1,0 +1,21 @@
+.chartsContainer{
+    display: flex;
+    flex-direction: column;
+}
+.donutsContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+.barContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loaderText p{
+    font-size: 1.2rem;
+    font-weight: bold;
+}

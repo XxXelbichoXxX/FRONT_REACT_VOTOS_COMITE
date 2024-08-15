@@ -34,7 +34,7 @@ export function AuthProvider(props){
         const me = await getMe(token);   
         //le damos el valor al auth con el objeto con el token y el usuario     
         setAuth({token, me});
-        console.log(me);
+        
     }
     //funcion para cerrar sesion
     const logouth = () => {

@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import { getMeApi } from '../api/user';
-import { getStagesApi, updateStageApi } from '../api/stage';
+import { getStagesApi, updateStageApi, geStageDependencyApi } from '../api/stage';
 import { useAuth } from './useAuth';
 export function useStage() {
     const {auth} = useAuth();
@@ -19,10 +19,9 @@ export function useStage() {
         try {
             setLoadingStage(true);
             //obtenemos un arreglo de objetos con los datos de todos los usuarios registrados para pintarlos en el datatable
-            const response = await getStagesApi(auth.token);
+            const response = await geStageDependencyApi(auth.me.dependencyIdFK, auth.token);
             setLoadingStage(false);
 
-            console.log(response);
             setStages(response);
             return response;
         }catch (errorStage) { 
@@ -32,15 +31,14 @@ export function useStage() {
         }
     }
 
-    const updateStage = async (stageId, data) => {
+    const updateStage = async (stageID, data) => {
         try {
           setLoadingStage(true);
           // Aquí estamos asumiendo que `datosActualizar` contiene los datos que deseas enviar para la actualización
-          const response = await updateStageApi(auth.token, stageId, data);
+          const response = await updateStageApi(auth.token, stageID, data);
           // Después de actualizar, puedes llamar a `getStage` para obtener los datos actualizados
           setLoadingStage(false);
 
-          console.log(response);
           setStages(response);
           return response;
         } catch (errorStage) {

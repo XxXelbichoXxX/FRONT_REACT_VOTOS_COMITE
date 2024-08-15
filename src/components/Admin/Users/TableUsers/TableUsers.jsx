@@ -9,6 +9,8 @@ export const TableUsers = (props) => {
   
   const [depOptions, setDepOptions] = useState([]);
   const { dependencies, getDependencies } = useDependency();
+
+
   useEffect(() => {
     if (!dependencies) {
       getDependencies();
@@ -21,6 +23,7 @@ export const TableUsers = (props) => {
       setDepOptions(options);
     }
   }, [dependencies]);
+  
 
   const getDependencyNameById = (dependencyIdFK) => {
     const foundDependency = depOptions.find((dep) => dep.value === dependencyIdFK);
@@ -73,7 +76,7 @@ export const TableUsers = (props) => {
         { text: 'Medio', value: '2' },
         { text: 'Operativo', value: '3' },
       ],
-      onFilter: (value, record) => record.rangeIdFK.toString() === value,
+      onFilter: (value, record) => record.rangeIdFK && record.rangeIdFK.toString() === value,
       render: (idRank) => {
         switch (idRank) {
           case 1:
@@ -110,6 +113,7 @@ export const TableUsers = (props) => {
         bordered
         pagination={{ pageSize: 10 }}
         rowKey="id"
+        locale={{ emptyText: 'No hay empleados para mostrar' }}
       />
     </>
   );

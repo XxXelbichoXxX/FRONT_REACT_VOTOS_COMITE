@@ -19,7 +19,6 @@ export const SideMenu = (props) => {
 function MenuLeft(props) {
   const { pathname } = props;
   const { auth } = useAuth();
-  console.log(auth);
 
   return (
     <Menu fixed="left" borderless className="side" vertical>

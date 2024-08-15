@@ -4,7 +4,7 @@ import './ModalBasic.scss';
 
 export const ModalBasic = ({ show, size, title, children, onClose }) => {
   return (
-    <Modal isOpen={show} toggle={onClose} size={size} centered className="custom-modal"> 
+    <Modal isOpen={show} toggle={onClose} size={size} centered className="custom-modal" backdrop = "static"> 
       <ModalHeader toggle={onClose}>{title}</ModalHeader>
       <ModalBody>{children}</ModalBody>
     </Modal>

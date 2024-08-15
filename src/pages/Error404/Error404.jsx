@@ -1,54 +1,34 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 import "./Error404.scss";
+import logo from "../../assets/logo_nayarit.png";
 
 export const Error404 = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/admin");
+  };
 
   return (
     <>
-      <section className="wrapper">
-        <div className="container">
-          <div id="scene" className="scene" data-hover-only="false">
-            <div className="circle" data-depth="1.2"></div>
-            <div className="one" data-depth="0.9">
-              <div className="content">
-                <span className="piece"></span>
-                <span className="piece"></span>
-                <span className="piece"></span>
-              </div>
-            </div>
-            <div className="two" data-depth="0.60">
-              <div className="content">
-                <span className="piece"></span>
-                <span className="piece"></span>
-                <span className="piece"></span>
-              </div>
-            </div>
-            <div className="three" data-depth="0.40">
-              <div className="content">
-                <span className="piece"></span>
-                <span className="piece"></span>
-                <span className="piece"></span>
-              </div>
-            </div>
-            <p className="p404" data-depth="0.50">
-              404
-            </p>
-            <p className="p404" data-depth="0.10">
-              404
-            </p>
+      <div className="wrapper">
+        <div className="content">
+          <div className="img">
+            <img src={logo} alt="Logo" />
+          </div>
+          <div className="error-code">
+            <p className="typing-effect">Error 404</p>
           </div>
           <div className="text">
-            <article>
-              <p>
-                Error, estas intentando ingresar a una pagina no existente<br />
-                Por favor vuelve al inicio.
-              </p>
-              <button><Link to="/">Volver al inicio</Link></button>
-            </article>
+            <p>La página que estás buscando no existe</p>
+            <Button type="primary" size="large" onClick={handleClick}>
+              Regresar al inicio
+            </Button>
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 };

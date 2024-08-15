@@ -3,22 +3,46 @@ import { Table } from "antd";
 import { useAuth, useVotes } from "../../../hooks";
 import {toast} from 'react-toastify';
 import { Icon, Button } from 'semantic-ui-react';
+import { useDependency } from "../../../hooks";
 import "./AddVoteForm.scss";
 
-export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
+export const AddVoteForm = ({ users, onDelete, stage, onClose, stageName }) => {
   const { auth } = useAuth();
   const { addVote } = useVotes();
+  const [depOptions, setDepOptions] = useState([]);
+  const { dependencies, getDependencies } = useDependency();
+
+
+
+  useEffect(() => {
+    if (!dependencies) {
+      getDependencies();
+    } else {
+      const options = dependencies.map((dep) => ({
+        key: dep.dependencyId,
+        text: dep.dependencyName,
+        value: dep.dependencyId,
+      }));
+      setDepOptions(options);
+    }
+  }, [dependencies]);
+
+  const getDependencyNameById = (dependencyIdFK) => {
+    const foundDependency = depOptions.find((dep) => dep.value === dependencyIdFK);
+    return foundDependency ? foundDependency.text : 'Dependencia no encontrada';
+
+  };
+
 
   const handleVote = () => {
     const votes = users.map((user) => ({
       empVoterIdFK: auth.me.username,
-      empCandidateIdFK: stage === 1 ? user.username : user.empCandidateIdFK,
+      empCandidateIdFK: stageName === 'nominación' ? user.username : user.empCandidateIdFK,
       rangeIdFK: auth.me.rangeIdFK,
       stageIdFK: stage,
       voteDate: new Date(),
       revocationStatus: false,
     }));
-    console.log("rangeIdFK:", auth.me.rangeIdFK); // Aquí agregamos el console.log
 
     addVote(votes)
       .then(() => {
@@ -42,14 +66,15 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
       dataIndex: "name",
       key: "name",
       render: (text, record) =>
-        stage === 1
+        stageName === "nominación"
           ? `${record.first_name} ${record.last_name}`
           : `${record.full_name}`,
     },
     {
-      title: "Dependencia",
-      dataIndex: "dependency",
-      key: "dependency",
+      title: 'Dependencia',
+      dataIndex: stageName === 'nominación' ? 'dependencyIdFK' : 'dependency',
+      align: 'center',
+      render: (dependencyIdFK) => getDependencyNameById(dependencyIdFK),
     },
     {
       title: "Puesto de Trabajo",
@@ -61,7 +86,7 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
       key: "action",
       render: (text, record) => (
         <Button icon color="red" 
-        onClick={() => stage === 1 ? handleDelete(record.id) : handleDelete(record.empCandidateIdFK)}>  <Icon name='trash' />
+        onClick={() => stageName === 'nominación' ? handleDelete(record.id) : handleDelete(record.empCandidateIdFK)}>  <Icon name='trash' />
           Eliminar
         </Button>
       ),
@@ -75,7 +100,7 @@ export const AddVoteForm = ({ users, onDelete, stage, onClose }) => {
           dataSource={users}
           columns={columns}
           pagination={false}
-          rowKey={(record) => stage === 2 ? record.empCandidateIdFK : record.id}
+          rowKey={(record) => stageName === 'votación' ? record.empCandidateIdFK : record.id}
         />
       </div>
       <div className="buttonContainer">

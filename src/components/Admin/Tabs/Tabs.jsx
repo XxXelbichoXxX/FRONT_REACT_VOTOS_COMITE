@@ -9,7 +9,7 @@ import { useStage } from "../../../hooks/useStage";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { ModalBasic } from "../../common/ModalBasic/ModalBasic";
 import { AddVoteForm } from "../AddVoteForm/AddVoteForm";
-import { Result } from "antd";
+import { StatusVote } from "../StatusVote/StatusVote";
 
 export const Tabs = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -24,18 +24,24 @@ export const Tabs = () => {
   useEffect(() => {
     getUsers();
     getStage();
-    renderCandidates();
   }, []);
+
+  useEffect(() => {
+    if (stages) {
+      renderCandidates();
+    }
+  }, [stages]);
 
   useEffect(() => {
     setSelectedCards([]);
     if (stages) {
       renderCandidates();
       if (activeTab === "2") {
+        const stage = stages && stages[0].stageId;
         const year = new Date().getFullYear().toString();
         const rangeId = auth.me.rangeIdFK;
         const voteCount = rangeId === 3 ? 6 : 4;
-        getVotesManualTop(1, year, voteCount);
+        getVotesManualTop(stage, year, voteCount);
       }
     }
   }, [activeTab]);
@@ -75,33 +81,31 @@ export const Tabs = () => {
 
   const renderCandidates = async () => {
     const year = new Date().getFullYear().toString();
-    const stage = activeTab === "1" ? 1 : 2;
+    const stage =
+      activeTab === "1"
+        ? stages && stages[0].stageId
+        : stages && stages[1].stageId;
     const result = await userVoted(stage, year);
     setHasVoted(result);
-    dateValidator(stage);
+    dateValidator(activeTab);
   };
 
   const electionCards = (selectedUser) => {
-    if (auth.me.rangeIdFK === 3 && selectedCards.length >= 3) {
+    if (auth.me.rangeIdFK === 3 && selectedCards.length === 2) {
+      setSelectedCards([...selectedCards, selectedUser]);
       setShowModal(true);
-    } else if (auth.me.rangeIdFK !== 3 && selectedCards.length >= 2) {
+    } else if (auth.me.rangeIdFK !== 3 && selectedCards.length === 1) {
+      setSelectedCards([...selectedCards, selectedUser]);
       setShowModal(true);
     } else {
-      console.log(selectedUser);
       setSelectedCards([...selectedCards, selectedUser]);
     }
   };
 
   const removeCard = (username) => {
-    if (activeTab === "1") {
-      const updatedCards = selectedCards.filter((card) => card.id !== username);
-      setSelectedCards(updatedCards);
-      setShowModal(false);
-    } else {
-      const updatedCards = selectedCards.filter((card) => card.id !== username);
-      setSelectedCards(updatedCards);
-      setShowModal(false);
-    }
+    const updatedCards = selectedCards.filter((card) => card.id !== username);
+    setSelectedCards(updatedCards);
+    setShowModal(false);
   };
 
   const filteredUsersWithoutSelectedCards = filteredUsers.filter((user) => {
@@ -136,7 +140,9 @@ export const Tabs = () => {
       {loadingStage ? (
         <div className="loader">
           {/* aqui recuerda cargar las imagenes de las dependencias */}
-          <h1>Cargando datos de las etapas, por favor, espere.</h1>
+          <h1 style={{ textAlign: "center" }}>
+            Cargando datos de las etapas, por favor, espere.
+          </h1>
           <div
             className="spinner-border spinner-custom-color"
             role="status"
@@ -145,7 +151,9 @@ export const Tabs = () => {
       ) : loadingUser ? (
         <div className="loader">
           {/* aqui recuerda cargar las imagenes de las dependencias */}
-          <h1>Cargando datos de los empleados, por favor, espere.</h1>
+          <h1 style={{ textAlign: "center" }}>
+            Cargando datos de los empleados, por favor, espere.
+          </h1>
           <div
             className="spinner-border spinner-custom-color"
             role="status"
@@ -154,19 +162,13 @@ export const Tabs = () => {
       ) : (
         <TabContent activeTab={activeTab}>
           <TabPane tabId="1">
-            <SearchBar setSearch={setSearch} />
-            {!hasVoted ? (
+            {hasVoted ? (
               <div className="loader">
-                {/* aqui recuerda cargar las imagenes de las dependencias */}
-                <div>
-                  <h1>
-                    Muchas gracias por tu participación, es muy importante para
-                    nosotros.
-                  </h1>
-                </div>
+                <StatusVote option={"votation"} />
               </div>
             ) : dateValidator(parseInt(activeTab)) ? (
               <div className="tabContentContainer">
+                <SearchBar setSearch={setSearch} />
                 {filteredUsersWithoutSelectedCards
                   .filter((user) => user.rangeIdFK === auth.me.rangeIdFK)
                   .map((user) => (
@@ -176,22 +178,23 @@ export const Tabs = () => {
                           user={user}
                           action={"Nominar"}
                           electionCards={electionCards}
-                          etapa={1}
+                          stageName={stages && stages[0].stageName}
                         />
                       </div>
                     </div>
                   ))}
               </div>
             ) : (
-              <p>Estás fuera de la fecha de votaciones.</p>
+              <StatusVote option={"timeout"} />
             )}
           </TabPane>
 
           <TabPane tabId="2">
             {loadingStage ? (
               <div className="loader">
-                {/* aqui recuerda cargar las imagenes de las dependencias */}
-                <h1>Cargando datos de las etapas, por favor, espere.</h1>
+                <h1 style={{ textAlign: "center" }}>
+                  Cargando datos de las etapas, por favor, espere.
+                </h1>
                 <div
                   className="spinner-border spinner-custom-color"
                   role="status"
@@ -199,8 +202,7 @@ export const Tabs = () => {
               </div>
             ) : loadingVotes ? (
               <div className="loader">
-                {/* aqui recuerda cargar las imagenes de las dependencias */}
-                <h1>
+                <h1 style={{ textAlign: "center" }}>
                   Cargando los votos de la etapa de nominaciones, por favor,
                   espere.
                 </h1>
@@ -211,12 +213,8 @@ export const Tabs = () => {
               </div>
             ) : hasVoted ? (
               <div className="loader">
-                {/* aqui recuerda cargar las imagenes de las dependencias */}
                 <div>
-                  <h1>
-                    Muchas gracias por tu participación, es muy importante para
-                    nosotros.
-                  </h1>
+                  <StatusVote option={"votation"} />
                 </div>
               </div>
             ) : dateValidator(parseInt(activeTab)) ? (
@@ -232,14 +230,14 @@ export const Tabs = () => {
                           user={vote}
                           action={"Votar"}
                           electionCards={electionCards}
-                          etapa={2}
+                          stageName={stages && stages[1].stageName}
                         />
                       </div>
                     </div>
                   ))}
               </div>
             ) : (
-              <p>Estás fuera de la fecha de votaciones.</p>
+              <StatusVote option={"timeout"} />
             )}
           </TabPane>
         </TabContent>
@@ -247,18 +245,29 @@ export const Tabs = () => {
 
       <ModalBasic
         show={showModal}
-        onClose={() => setShowModal(false)}
-        title={`Realiza tu votación para la etapa ${
-          activeTab === "1" ? "1" : "2"
+        onClose={() => {
+          setShowModal(false);
+          setSelectedCards([]);
+        }}
+        title={`Realiza tu votación para la etapa de ${
+          activeTab === "1" ? "nominación" : "votación"
         }`}
         size={"lg"}
       >
         <AddVoteForm
           users={selectedCards}
-          onDelete={removeCard}
+          onDelete={removeCard} // Pasamos la función removeCard como prop
           action={"Eliminar voto"}
-          stage={activeTab === "1" ? 1 : 2}
-          onClose={() => setShowModal(false)}
+          stage={
+            activeTab === "1"
+              ? stages && stages[0].stageId
+              : stages && stages[1].stageId
+          }
+          stageName={activeTab === "1" ? "nominación" : "votación"}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedCards([]);
+          }}
         />
       </ModalBasic>
     </>

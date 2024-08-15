@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { getCountVotes, getCountVotesTop, getCheckVotes, addVotesApi } from "../api/votes";
+import {
+  getCountVotes,
+  getCountVotesTop,
+  getCheckVotes,
+  addVotesApi,
+  countVotesByPeriodApi,
+  countVotesByFiltersApi,
+  updateRevocationStatus,
+} from "../api/votes";
 import { useAuth } from "./useAuth";
 
 export function useVotes() {
@@ -7,6 +15,8 @@ export function useVotes() {
   const [loadingVote, setLoadingVote] = useState(true);
   const [errorVote, setErrorVote] = useState(null);
   const [votes, setVotes] = useState(null);
+  const [votesBP, setVotesBP] = useState(null);
+  const [votesBPR, setVotesBPR] = useState(null);
 
   const getVotesManual = async (data) => {
     try {
@@ -19,8 +29,51 @@ export function useVotes() {
       );
       setLoadingVote(false);
 
-      console.log(response);
       setVotes(response);
+      return response;
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
+    }
+  };
+  const setRevocation = async (empCandidateIdFK) => {
+    try {
+      setLoadingVote(true);
+      const response = await updateRevocationStatus(empCandidateIdFK);
+      setLoadingVote(false);
+
+      setVotes(response);
+      return response;
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
+    }
+  };
+
+  const countVotesByPeriod = async (data) => {
+    try {
+      setLoadingVote(true);
+      const response = await countVotesByPeriodApi(data, auth.token);
+      setLoadingVote(false);
+      setVotesBP(response);
+      return response;
+    } catch (errorVote) {
+      setLoadingVote(false);
+      setErrorVote(errorVote);
+    }
+  };
+  const countVotesByFilters = async (data) => {
+    try {
+      setLoadingVote(true);
+      const response = await countVotesByFiltersApi(
+        data.stageIdFK,
+        data.rangeIdFK,
+        data.period,
+        auth.token
+      );
+      setLoadingVote(false);
+
+      setVotesBPR(response);
       return response;
     } catch (errorVote) {
       setLoadingVote(false);
@@ -40,7 +93,6 @@ export function useVotes() {
       setLoadingVote(false);
 
       setVotes(response);
-      console.log(votes);
     } catch (errorVote) {
       setLoadingVote(false);
       setErrorVote(errorVote);
@@ -60,7 +112,6 @@ export function useVotes() {
       setLoadingVote(false);
 
       setVotes(response);
-      //console.log(response);
     } catch (errorVote) {
       setLoadingVote(false);
       setErrorVote(errorVote);
@@ -84,6 +135,7 @@ export function useVotes() {
       return false; // En caso de errorVote, devuelve false
     }
   };
+
   const addVote = async (data) => {
     try {
       setLoadingVote(true);
@@ -99,10 +151,15 @@ export function useVotes() {
     loadingVote,
     errorVote,
     votes,
+    votesBP,
+    votesBPR,
     getVotesUser,
     getVotesManual,
     getVotesManualTop,
     userVoted,
-    addVote
+    setRevocation,
+    addVote,
+    countVotesByPeriod,
+    countVotesByFilters,
   };
 }

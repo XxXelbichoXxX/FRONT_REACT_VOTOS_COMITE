@@ -1,7 +1,7 @@
 $primary: #D2C2B3;
 
 @keyframes spinner {
-    0% { transform: rotateZ(0deg); }
+    0% { transform: rotateZ(0deg) !important;}
     100% { transform: rotateZ(359deg); }
 }
 
@@ -11,15 +11,15 @@ $primary: #D2C2B3;
 
 
 .login {
-    border-radius: 8px 8px 20px 20px;
-    padding: 10px 20px 20px 20px;
-    width: 90%;
-    max-width: 350px;
-    background: #ffffff;
-    position: relative;
-    padding-bottom: 100px;
-    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
-    margin: 0 auto;
+    border-radius: 8px 8px 20px 20px !important;
+    padding: 10px 20px 20px 20px !important;
+    width: 90% !important;
+    max-width: 350px !important;
+    background: #ffffff !important;
+    position: relative !important;
+    padding-bottom: 100px !important;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3) !important;
+    margin: 0 auto !important;
   
   &.loading {
     button {
@@ -47,10 +47,10 @@ $primary: #D2C2B3;
   }
 
   img{
-    max-width: 60%;
-    margin: 0 auto; // Centra horizontalmente la imagen
-    display: block; // Asegura que la imagen esté centrada correctamente
-    margin-bottom: 20px; // Ajusta el margen inferior 
+    max-width: 60% !important;
+    margin: 0 auto !important; // Centra horizontalmente la imagen
+    display: block !important; // Asegura que la imagen esté centrada correctamente
+    margin-bottom: 20px !important; // Ajusta el margen inferior 
   }
   
   input {
@@ -62,7 +62,7 @@ $primary: #D2C2B3;
     border: 1px solid #967a60;
     transition: border-width 0.2s ease;
     border-radius: 2px;
-    color: #ccc;
+    color: #7c7c7c;
     
     &+ i.fa {
       color: #fff;
@@ -78,19 +78,19 @@ $primary: #D2C2B3;
       &+ i.user {
         opacity: 1;
         left: 31px;
-        top: 357px;
+        top: 358px !important;
         transition: all 0.25s ease-out;        
       }
       &+ i.lock {
         opacity: 1;
         left: 31px;
-        top: 423px;
+        top: 423px !important;
         transition: all 0.25s ease-out;        
       }
-
-      outline: none;
+      outline-offset: 0px;
+      outline-color: $primary;
       color: #363636;
-      //border-color: $primary;
+      border-color: $primary !important;
       border-left-width: 45px;
     }
     
@@ -125,7 +125,7 @@ $primary: #D2C2B3;
     bottom: 0;
     max-height: 60px;
     border: 0px solid rgba(0,0,0,0.1);
-  border-radius: 0 0 2px 2px;
+    border-radius: 0 0 20px 20px !important;
     transform: rotateZ(0deg);
     
     transition: all 0.1s ease-out;
@@ -155,6 +155,7 @@ $primary: #D2C2B3;
   
     &:not(.loading) button:hover {
       box-shadow: 0px 1px 3px $primary;
+      border-radius: 0 0 20px 20px !important;
     }
     &:not(.loading) button:focus {
       border-bottom-width: 4px;

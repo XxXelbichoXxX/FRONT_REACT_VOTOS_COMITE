@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Card as CustomCard, Button } from "antd";
+import { useDependency } from "../../../hooks";
 import "./Card.scss";
-import logo from "../../../assets/user.jpg";
 
-export const CustomCardComponent = ({ user, action, electionCards, etapa }) => {
+export const CustomCardComponent = ({ user, action, electionCards, stageName }) => {
+
+  const [depOptions, setDepOptions] = useState([]);
+  const { dependencies, getDependencies } = useDependency();
+
+
+  useEffect(() => {
+    if (!dependencies) {
+      getDependencies();
+    } else {
+      const options = dependencies.map((dep) => ({
+        key: dep.dependencyId,
+        text: dep.dependencyName,
+        value: dep.dependencyId,
+      }));
+      setDepOptions(options);
+    }
+  }, [dependencies]);
+
+  const getDependencyNameById = (dependencyIdFK) => {
+    const foundDependency = depOptions.find((dep) => dep.value === dependencyIdFK);
+    return foundDependency ? foundDependency.text : 'Dependencia no encontrada';
+  };
+
   const handleClick = () => {
     electionCards(user);
   };
@@ -11,13 +34,13 @@ export const CustomCardComponent = ({ user, action, electionCards, etapa }) => {
     <>
       <CustomCard
         title={
-          etapa === 1 ? user.first_name + " " + user.last_name + " " + user.username : user.full_name
+          stageName === 'nominación' ? user.first_name + " " + user.last_name : user.full_name
         }
         className="card-default"
       >
-          {etapa === 2 ? <img src={user.image} alt="Imagen" /> : <img src= {logo} alt="Imagen" />}
+          {stageName === 'votación' ? <img src={user.image} alt="Imagen" /> : <img src= {user.logo} alt="Imagen" />}
           <div className="content-card">
-          <h5>{user.dependencyIdFK}</h5>
+          <h5>{stageName === 'votación' ? getDependencyNameById(user.dependency) : getDependencyNameById(user.dependencyIdFK)}</h5>
           <p>{user.workstation}</p>
           <Button className="custom-button" type="primary" onClick={handleClick}>
             {action}

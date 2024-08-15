@@ -22,6 +22,43 @@ export async function getCountVotes(stageId, rangeId, period, token) {
     }
 }
 
+export async function countVotesByPeriodApi(period, token) {
+    try {
+        const url = `${BASE_API}/api/vote/countVotesByPeriod/`;
+        const params = {
+            params: {
+                period: period,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+export async function countVotesByFiltersApi(stageId, rangeId, period, token) {
+    try {
+        const url = `${BASE_API}/api/vote/countVotesByFilters/`;
+        const params = {
+            params: {
+                stageIdFK: stageId,
+                rangeIdFK: rangeId,
+                period: period,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function addVotesApi(data, token) {
     try {
         const url = `${BASE_API}/api/vote/createMassiveVotes/`;
@@ -55,6 +92,20 @@ export async function getCountVotesTop(stageId, rangeId, voteYear, tope, token) 
             },
             headers: {
                 Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+export async function updateRevocationStatus(empCandidateIdFK) {
+    try {
+        const url = `${BASE_API}/api/vote/updateRevocationStatus/`;
+        const params = {
+            params: {
+                empCandidateIdFK: empCandidateIdFK,
             }
         };
         const response = await axios.get(url, params);

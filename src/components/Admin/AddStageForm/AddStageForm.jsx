@@ -1,16 +1,20 @@
 import "./AddStageForm.scss";
-import React from "react";
 import { useFormik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import * as Yup from "yup";
 import { Form, Button, Icon } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { useAuth, useStage } from "../../../hooks";
+import { DatePicker, Space } from "antd";
+
+const { RangePicker } = DatePicker;
+
 
 
 export const AddStageForm = ({ stage, onCloseModal }) => {
   const { updateStage, getStage, stages } = useStage();
   const { auth } = useAuth();
+  const startDateRef = useRef(null);
 
   useEffect(() => {
     getStage();
@@ -23,27 +27,52 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
       dependencyIdFK: auth.me.dependencyIdFK,
     },
     validationSchema: Yup.object({
-      startDate: Yup.date().required("Este campo es obligatorio"),
-      endDate: Yup.date().required("Este campo es obligatorio"),
+      startDate: Yup.date().required(
+        "Debes seleccionar el rango de fechas de la etapa para poder actualizarlas"
+      ),
     }),
     onSubmit: async (formValues) => {
       try {
-        // Formatea las fechas antes de enviarlas
-        await updateStage(stage, formValues);
-        // Tu lógica para manejar el envío del formulario con las fechas formateadas
+        if (stage === "nominación") {
+          if (formValues.startDate > stages[1].startDate) {
+            toast.error(
+              "La fecha de inicio de la etapa de nominación no puede ser mayor a la fecha de inicio de la etapa de votación"
+            );
+          } else {
+            await updateStage(stages[0].stageId, formValues);
+            toast.success(
+              `Las fechas de la etapa de ${stage} fueron actualizadas exitosamente`
+            );
+          }
+        } else if (stage === "votación") {
+          if (formValues.startDate < stages[0].endDate) {
+            toast.error(
+              "La fecha de inicio de la etapa de votaciones no puede ser menor a la fecha limite de la etapa de nominaciones"
+            );
+          } else {
+            await updateStage(stages[1].stageId, formValues);
+            toast.success(
+              `Las fechas de la etapa de ${stage} fueron actualizadas exitosamente`
+            );
+          }
+        }
         onCloseModal();
-        toast.success(`fechas de la etapa ${stage} actualizadas exitosamente`);
       } catch (error) {
         console.error(error);
         toast.error(`Error: ${error}`);
       }
     },
   });
+  if (formik.touched.startDate && formik.errors.startDate) {
+    startDateRef.current.focus();
+  }
   return (
     <>
-      {stages && stages.length > 0 && stage === 1 && (
+      {stages && stages.length > 0 && stage === "nominación" && (
         <div className="container">
-          <h4>Fechas cargadas</h4>
+          <div className="title">
+            <h4>Fechas establecidas para la nominación</h4>
+          </div>
           <div className="editStage">
             <div className="start">
               <p>Fecha de inicio:</p>
@@ -57,9 +86,12 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
           <br />
         </div>
       )}
-      {stages && stages.length > 1 && stage !== 1 && (
+      {stages && stages.length > 0 && stage === "votación" && (
         <div className="container">
-          <h4>Fechas cargadas</h4>
+          <div className="title">
+            <h4>Fechas establecidas para la votación</h4>
+          </div>
+
           <div className="editStage">
             <div className="start">
               <p>Fecha de inicio:</p>
@@ -77,32 +109,29 @@ export const AddStageForm = ({ stage, onCloseModal }) => {
         className="add-edit-stage-form-rankin"
         onSubmit={formik.handleSubmit}
       >
-        <Form.Input
-          type="date"
-          label="Fecha de Inicio"
-          name="startDate"
-          onChange={formik.handleChange}
-          value={formik.values.startDate}
-        />
-        {formik.errors.startDate && formik.touched.startDate && (
-          <div className="error">{formik.errors.startDate}</div>
-        )}
+        <div className="datePickerContainer">
+          <h4>¿Desea cambiar las fechas de {stage}?</h4>
+          <Space direction="vertical" size={12}>
+            <RangePicker
+              ref={startDateRef}
+              className="datePicker"
+              placeholder={["Fecha de inicio", "Fecha de fin"]}
+              onChange={(dates, dateStrings) => {
+                formik.setFieldValue("startDate", dateStrings[0]);
+                formik.setFieldValue("endDate", dateStrings[1]);
+              }}
+            />
+          </Space>
 
-        <Form.Input
-          type="date"
-          label="Fecha de Fin"
-          name="endDate"
-          onChange={formik.handleChange}
-          value={formik.values.endDate}
-        />
-        {formik.errors.endDate && formik.touched.endDate && (
-          <div className="error">{formik.errors.endDate}</div>
-        )}
+          {formik.errors.startDate && formik.touched.startDate && (
+            <div className="error">{formik.errors.startDate}</div>
+          )}
 
-        <Button type="submit" primary fluid className="custom-button">
-          Actualizar Fechas{" "}
-          <Icon name="calendar" style={{ marginLeft: "5px" }} />
-        </Button>
+          <Button type="submit" primary fluid className="custom-button">
+            Actualizar Fechas{" "}
+            <Icon name="calendar" style={{ marginLeft: "5px" }} />
+          </Button>
+        </div>
       </Form>
       <br />
     </>

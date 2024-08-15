@@ -1,0 +1,60 @@
+$primary: #d2c2b3;
+.login-admin {
+  background-image: url("../../../assets/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(359deg);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+.login-admin {
+  position: relative;
+
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    background: rgba(darken($primary, 50%), 0.85);
+  }
+  .floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    
+    .floating-button {
+      display: block;
+      margin-bottom: 10px;
+      width: 110px;
+      border-radius: 100px;
+      white-space: pre-wrap;
+      background: linear-gradient(315deg, #36A767 0%, #4AA63C 74%);
+      color: white;
+      font-weight: 600;
+      
+    }
+  }
+}
+
+h3 {
+  color: #fff !important;
+  font-family: 'Courier New', Courier, monospace;
+}
+

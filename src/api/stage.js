@@ -14,6 +14,25 @@ export async function getStagesApi(token) {
   }
 }
 
+export async function geStageDependencyApi(dependencyIdFK, token) {
+  try {
+      const url = `${BASE_API}/api/stage/getStagesByDependency/`;
+      const params = {
+          params: {
+              dependencyIdFK: dependencyIdFK,
+          },
+          headers: {
+              Authorization: `Bearer ${token}`,
+          }
+      };
+      const response = await axios.get(url, params);
+      return response.data;
+  } catch (error) {
+      throw error;
+  }
+}
+
+
 export async function updateStageApi(token, stageId, data) {
   try {
     const url = `${BASE_API}/api/stage/${stageId}/`; // Ajusta la URL según tu endpoint

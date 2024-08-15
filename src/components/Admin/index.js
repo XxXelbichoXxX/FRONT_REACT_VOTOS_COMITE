@@ -12,3 +12,13 @@ export * from './SearchBar';
 
 export * from './Dependencies';
 
+export * from './RevocationForm';
+
+export * from './ForgetPasswordForm';
+
+export * from './ResetPasswordForm';
+
+export * from './StatusVote';
+
+
+

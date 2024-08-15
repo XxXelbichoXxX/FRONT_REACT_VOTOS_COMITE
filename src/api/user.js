@@ -52,6 +52,77 @@ export async function getUserApi(username, token) {
     } catch (error) { throw error; }    
 }
 
+export async function getUserDependencyApi(dependencyIdFK, token) {
+    try {
+        const url = `${BASE_API}/api/user/getUsersByDependency/`;
+        const params = {
+            params: {
+                dependencyIdFK: dependencyIdFK,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+export async function checkCredentialsApi(username, email) {
+    try {
+        const url = `${BASE_API}/api/user/checkCredentials/`;
+        const params = {
+            params: {
+                username: username,
+                email: email
+            },
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function countUsersApi(dependencyIdFK, token) {
+    try {
+        const url = `${BASE_API}/api/user/countUsersByDependency/`;
+        const params = {
+            params: {
+                dependencyIdFK: dependencyIdFK,
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function countUsersRangeApi(rangeIdFK,dependencyIdFK, token) {
+    try {
+        const url = `${BASE_API}/api/user/countUsersByDependencyAndRange/`;
+        const params = {
+            params: {
+                rangeIdFK: rangeIdFK,
+                dependencyIdFK: dependencyIdFK
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        };
+        const response = await axios.get(url, params);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 //----------------------------------------------------------------------------
 //crear un nuevo usuario cuando no hay imagen
 export async function addUserApi(data, token) {
@@ -67,6 +138,20 @@ export async function addUserApi(data, token) {
         return response.data;
     }catch (error) { throw error; }
 } 
+
+export async function editPasswordApi(data) {
+    try {
+        const url = `${BASE_API}/api/user/reset_password/`;
+        const params = {
+            headers: { 
+                'Content-Type': 'application/json',
+            },
+        }
+        const response = await axios.post(url, data, params);
+        return response.data;
+    }catch (error) { throw error; }
+} 
+
 
 //Crear un nuevo usuario cuando hay imagen
 export async function addUserApiImage(data, token) {

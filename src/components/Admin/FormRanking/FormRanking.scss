@@ -1,14 +1,52 @@
-.header-page-admin-rankin {
+  .form-container{
+    display: flex;
+    flex-direction: column;
+  }
+  .container-form-ranking{
+    border: 1px solid #ccc;
+    padding: 10px;
+
+  }
+  .stages-options{
+    border: 1px solid #ccc;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 97px;
+
+    p{
+      font-size: 20px;
+      margin-bottom: -6px;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+.header-page-admin-ranking {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: 10px; // Añade un relleno para evitar que los elementos se peguen a los bordes
   }
   
-  .add-edit-user-form-rankin {
+  .add-edit-user-form-ranking {
     display: flex;
-    gap: 10px; // Espaciado entre los elementos
-    align-items: center; // Alinea los elementos verticalmente al centro
+    gap: 10px;
+    align-items: center; 
+    justify-content: flex-start;
+  
+  .input-ranking{
+    width: 100px !important;
+    
+  }
+
+
+  .custom-button{
+    width: 80px !important;
+    color: #000 !important;
+    background: linear-gradient(315deg, #D6C8BB 45%, #C4B19A 60%) !important;
+  }
+  .custom-button:hover{
+    background: linear-gradient(315deg, #C4B19A 45%, #D6C8BB 60%) !important;
+  }
   
     .field {
       margin-bottom: 0; // Elimina el margen inferior predeterminado

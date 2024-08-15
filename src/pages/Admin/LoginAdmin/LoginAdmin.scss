@@ -5,6 +5,8 @@ $primary: #d2c2b3;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
+  min-width: 100vw;
+  min-height: 100vh;
 }
 
 @keyframes spinner {
@@ -38,7 +40,7 @@ $primary: #d2c2b3;
     right: 20px;
     
     .floating-button {
-      display: block;
+      display: block !important;
       margin-bottom: 10px;
       width: 110px;
       border-radius: 100px;
@@ -46,6 +48,7 @@ $primary: #d2c2b3;
       background: linear-gradient(315deg, #36A767 0%, #4AA63C 74%);
       color: white;
       font-weight: 600;
+      font-size: 13px !important;
       
     }
   }
@@ -55,3 +58,4 @@ h3 {
   color: #fff !important;
   font-family: 'Courier New', Courier, monospace;
 }
+

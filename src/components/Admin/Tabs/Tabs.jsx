@@ -211,7 +211,7 @@ export const Tabs = () => {
                   role="status"
                 ></div>
               </div>
-            ) : hasVoted ? (
+            ) : !hasVoted ? (
               <div className="loader">
                 <div>
                   <StatusVote option={"votation"} />
